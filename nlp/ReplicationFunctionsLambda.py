@@ -1,11 +1,11 @@
 import string
 
 
-def processReplicationCommon(self, evalFunc, processRulesFunc, text, rule_map, match_begin, match_end, current_position, matches,
+def processReplicationCommon(evalFunc, processRulesFunc, text, rule_map, match_begin, match_end, current_position, matches,
 							 this_char, previous_char):
 	current_repeats = 0
 	text_length = len(text)
-	while evalFunc(this_char) and current_repeats < self.max_repeat and current_position < text_length:
+	while evalFunc(this_char) and current_repeats < ReplicationFunctions.max_repeat and current_position < text_length:
 		current_repeats += 1
 		current_position += 1
 		if current_position == text_length:
@@ -16,10 +16,11 @@ def processReplicationCommon(self, evalFunc, processRulesFunc, text, rule_map, m
 
 
 class ReplicationFunctions:
+
 	def __init__(self, processRulesFunc, max_repeat=50):
 		self.replication_funcs = dict()
 		self.processRules = processRulesFunc
-		self.max_repeat = max_repeat
+		ReplicationFunctions.max_repeat = max_repeat
 		self.initReplicationFunctions(self.replication_funcs)
 		pass
 

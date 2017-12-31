@@ -225,9 +225,9 @@ class FastCNER:
 						continue
 					current_spans_list[pos] = current_span
 					overlap_checker.remove_overlap(current_span.begin, current_span.end)
-					overlap_checker.addi(current_span.begin, current_span.end, current_span)
+					overlap_checker.addi(current_span.begin, current_span.end, pos)
 				else:
-					overlap_checker.addi(current_span.begin, current_span.end, current_span)
+					overlap_checker.addi(current_span.begin, current_span.end, len(current_spans_list))
 					current_spans_list.append(current_span)
 			else:
 				matches[key] = current_spans_list

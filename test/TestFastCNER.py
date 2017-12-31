@@ -1,6 +1,4 @@
-import json
 import unittest
-from pprint import pprint
 
 from nlp.FastCNER import FastCNER
 from nlp.IOUtils import Rule
@@ -45,8 +43,36 @@ class TestFastCNER(unittest.TestCase):
 bc\t1\tR1
 b\t1\tR2'''
 		fastcner = FastCNER(rule_str)
-		res=fastcner.processString('a ab abc.a ab bc.')
-		print(res)
+		res = fastcner.processString('a ab abc.a ab bc.')
+		assert (len(res) == 2)
+		assert (len(res['R1']) == 1)
+		assert (res['R1'][0].begin == 14 and res['R1'][0].end == 16)
+		assert (len(res['R2']) == 4)
+		for span in res['R2']:
+			assert (span.text == 'b')
+
+	def test_wildcard_match(self):
+		rule_str = ''' \c\c\c\t1.5\tR1\tPSEUDO
+ (\c\c\t1\tR1'''
+		fastcner = FastCNER(rule_str)
+		res = fastcner.processString('a ab abc.a db bc.')
+		assert (len(res) == 1)
+		assert (len(res['R1']) == 3)
+		assert (res['R1'][0].text == 'ab')
+		assert (res['R1'][1].text == 'db')
+		assert (res['R1'][2].text == 'bc')
+
+
+	def test_replicate_match(self):
+		rule_str = '''\c+\t1.5\tR1\tPSEUDO
+\c\c\t1\tR1'''
+		fastcner = FastCNER(rule_str)
+		res = fastcner.processString('a ab afc.a eg bc.')
+		assert (len(res) == 1)
+		assert (len(res['R1']) == 3)
+		assert (res['R1'][0].text == 'ab')
+		assert (res['R1'][1].text == 'eg')
+		assert (res['R1'][2].text == 'bc')
 
 
 if __name__ == '__main__':
