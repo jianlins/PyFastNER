@@ -13,10 +13,10 @@
 # limitations under the License.
 from intervaltree import IntervalTree
 
-from nlp.WildCardFunctions import WildCardFunctions
-from nlp.IOUtils import IOUtils, Rule, Span
-from nlp.ReplicationFunctionsLambda import ReplicationFunctions
-from nlp.ReplicationFunctionsLambda import processReplicationCommon
+from PyFastNER.WildCardFunctions import WildCardFunctions
+from PyFastNER.IOUtils import IOUtils, Rule, Span
+from PyFastNER.ReplicationFunctionsLambda import ReplicationFunctions
+from PyFastNER.ReplicationFunctionsLambda import processReplicationCommon
 
 
 class FastCNER:
@@ -144,10 +144,7 @@ class FastCNER:
 		rule_map1[rule_str[i]] = rule_map2.copy()
 		return True
 
-	def processString(self, text):
-		return self.processStringOffset(text, 0)
-
-	def processStringOffset(self, text, offset):
+	def processString(self, text, offset=0):
 		self.offset = offset
 		self.overlap_checkers.clear()
 		matches = dict()
