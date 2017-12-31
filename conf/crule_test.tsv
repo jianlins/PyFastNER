@@ -7,6 +7,6 @@ hearing changes	0.5	HEARING
 
 he (pa)t	0.5	PROBLEM
 he att	0.5	PROBLEM
-T\s+1\d\d.\d[|F|\s+F]) 	1	edu.utah.bmi.type.system.Fever_present
-TT\s+\d+[|.\d] 	2	edu.utah.bmi.type.system.Fever_absent	PSEUDO
-[T|t]emperature\s+[|\c+\s+]1\d\d[|.\d][|F|\s+F])[\p|\w]	1	edu.utah.bmi.type.system.Fever_present
+#T\s+1\d\d.\d[|F|\s+F]) 	1	edu.utah.bmi.type.system.Fever_present
+#TT\s+\d+[|.\d] 	2	edu.utah.bmi.type.system.Fever_absent	PSEUDO
+#[T|t]emperature\s+[|\c+\s+]1\d\d[|.\d][|F|\s+F])[\p|\w]	1	edu.utah.bmi.type.system.Fever_present

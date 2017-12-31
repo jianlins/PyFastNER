@@ -2,7 +2,7 @@ import pandas as pd
 
 # df=pd.read_csv('../conf/crule_test.tsv', header=0, sep='\t')
 # print(df)
-from edu_utah_bmi_nlp.IOUtils import IOUtils
+from nlp.IOUtils import IOUtils
 
 ioutils = IOUtils('../conf/crule_test.tsv')
 print(ioutils.initiations)
