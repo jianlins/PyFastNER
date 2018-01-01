@@ -215,7 +215,7 @@ class FastCNER:
             deter_rule = rule_map[')']
             if FastCNER.END in deter_rule:
                 self.addDeterminants(text, deter_rule, matches, match_begin, current_position, current_position)
-            else:
+            elif '\\' in deter_rule and 'e' in deter_rule['\\']:
                 self.processRules(text, deter_rule['\\'], match_begin, current_position, current_position, matches,
                                   pre_char, False, ' ')
         elif current_position == length and '+' in rule_map:
