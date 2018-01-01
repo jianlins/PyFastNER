@@ -34,6 +34,7 @@ class FastCNER:
         self.rule_map = dict()
         self.scores = dict()
         io_utils = IOUtils(rule_str)
+        self.full_definition = io_utils.full_definition
         self.rule_store = io_utils.rule_cells
         self.constructRuleMap(self.rule_store)
 
@@ -51,6 +52,9 @@ class FastCNER:
             else:
                 self.addRule(rule)
         pass
+
+    def getType(self, span):
+        return self.rule_store[span.rule_id].type
 
     # expand rules with square brackets
     def expandSquareBracket(self, rule):

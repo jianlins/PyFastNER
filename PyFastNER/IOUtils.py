@@ -17,79 +17,81 @@ from decimal import Decimal
 
 class IOUtils:
 
-	def __init__(self, rules_str):
-		self.rule_cells = {}
-		self.initiations = {}
-		if rules_str.lower().endswith('csv'):
-			self.read(rules_str, ',')
-		elif rules_str.lower().endswith('tsv'):
-			self.read(rules_str, '\t')
-		else:
-			self.readString(rules_str, '\t')
-		pass
+    def __init__(self, rules_str):
+        self.rule_cells = {}
+        self.initiations = {}
+        self.full_definition = False
+        if rules_str.lower().endswith('csv'):
+            self.read(rules_str, ',')
+        elif rules_str.lower().endswith('tsv'):
+            self.read(rules_str, '\t')
+        else:
+            self.readString(rules_str, '\t')
+        pass
 
-	def read(self, file_name, delimiter):
-		with open(file_name, newline='') as csvfile:
-			self.parse(csvfile, delimiter)
-		pass
+    def read(self, file_name, delimiter):
+        with open(file_name, newline='') as csvfile:
+            self.parse(csvfile, delimiter)
+        pass
 
-	def readString(self, input, delimiter):
-		self.parse(input.splitlines(), delimiter)
+    def readString(self, input, delimiter):
+        self.parse(input.splitlines(), delimiter)
 
-	def parse(self, input, delimiter):
-		spamreader = csv.reader(input, delimiter=delimiter)
-		row_num = 0
-		for row in spamreader:
-			row_num += 1
-			if len(row) < 2:
-				continue
-			if row[0].startswith('#'):
-				continue
-			if row[0].startswith('@'):
-				if row[0][1].isupper():
-					self.initiations[row_num] = row
-			elif len(row) >= 3:
-				self.rule_cells[row_num] = self.buildRule(row_num, row)
-			else:
-				print('Incorrect formated rule: ' + str(row))
-		pass
+    def parse(self, input, delimiter):
+        spamreader = csv.reader(input, delimiter=delimiter)
+        row_num = 0
+        for row in spamreader:
+            row_num += 1
+            if len(row) < 2:
+                continue
+            if row[0].startswith('#'):
+                continue
+            if row[0].startswith('@'):
+                if row[0][1].isupper():
+                    self.initiations[row_num] = row
+            elif len(row) >= 3:
+                self.rule_cells[row_num] = self.buildRule(row_num, row)
+            else:
+                print('Incorrect formated rule: ' + str(row))
+        pass
 
-	def buildRule(self, row_num, row):
-		rule_type = 'ACTUAL'
-		if len(row) == 4:
-			rule_type = row[3].strip()
-		return Rule(row_num, row[0], row[2].strip(), float(row[1].strip()), rule_type)
+    def buildRule(self, row_num, row):
+        rule_type = 'ACTUAL'
+        if len(row) == 4:
+            rule_type = row[3].strip()
+            self.full_definition = True
+        return Rule(row_num, row[0], row[2].strip(), float(row[1].strip()), rule_type)
 
 
 class Rule:
-	def __init__(self, id, rule, rule_name, score=1.0, type='ACTUAL'):
-		self.id = id
-		self.rule = rule
-		self.score = score
-		self.rule_name = rule_name
-		self.type = type
+    def __init__(self, id, rule, rule_name, score=1.0, type='ACTUAL'):
+        self.id = id
+        self.rule = rule
+        self.score = score
+        self.rule_name = rule_name
+        self.type = type
 
-	def copy(self):
-		return Rule(self.id, self.rule, self.rule_name, self.score, self.type)
+    def copy(self):
+        return Rule(self.id, self.rule, self.rule_name, self.score, self.type)
 
-	def __str__(self):
-		return "Rule {0}:\n\trule content:\t{1}\n\trule score:\t{2}\n\trule name:\t{3}\n\trule type:\t{4}\n".format(
-			self.id, self.rule, self.score, self.rule_name, self.type)
+    def __str__(self):
+        return "Rule {0}:\n\trule content:\t{1}\n\trule score:\t{2}\n\trule name:\t{3}\n\trule type:\t{4}\n".format(
+            self.id, self.rule, self.score, self.rule_name, self.type)
 
-	def __repr__(self):
-		return self.__str__()
+    def __repr__(self):
+        return self.__str__()
 
 
 class Span:
-	def __init__(self, begin=-1, end=-1, text='', rule_id=-1, score=1.0):
-		self.begin = begin
-		self.end = end
-		self.width = end - begin
-		self.text = text
-		self.rule_id = rule_id
-		self.score = score
+    def __init__(self, begin=-1, end=-1, text='', rule_id=-1, score=1.0):
+        self.begin = begin
+        self.end = end
+        self.width = end - begin
+        self.text = text
+        self.rule_id = rule_id
+        self.score = score
 
-	def __str__(self):
-		return "Span: \n\tbegin:\t{0}\n\tend:\t{1}\n\twidth:\t{2}\n\ttext:\t{3}\n\trule_id:\t{4}\n\tscore:\t{5}".format(
-			self.begin, self.end, self.width, self.text, self.rule_id, self.score
-		)
+    def __str__(self):
+        return "Span: \n\tbegin:\t{0}\n\tend:\t{1}\n\twidth:\t{2}\n\ttext:\t{3}\n\trule_id:\t{4}\n\tscore:\t{5}".format(
+            self.begin, self.end, self.width, self.text, self.rule_id, self.score
+        )
