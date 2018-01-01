@@ -12,7 +12,7 @@ setup(
     author='Jianlin',
     author_email='jianlinshi.cn@gmail.com',
     url='https://github.com/jianlins/PyFastNER',  # use the URL to the github repo
-    download_url='https://github.com/jianlins/PyFastNER/archive/1.0.dev1.tar.gz',  # I'll explain this in a second
+    download_url='https://github.com/jianlins/PyFastNER/archive/1.0.dev1.zip',  # I'll explain this in a second
     keywords=['PyFastNER', 'ner', 'regex'],
     long_description=long_description,
     classifiers=[
