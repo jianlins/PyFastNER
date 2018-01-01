@@ -33,10 +33,20 @@ class FastCNER:
         self.rule_str = rule_str
         self.rule_map = dict()
         self.scores = dict()
+        self.full_definition = False
+        self.rule_store = {}
+        self.initiate(rule_str)
+
+    def initiate(self, rule_str):
+        self.rule_str = rule_str
+        self.rule_map.clear()
+        self.rule_store.clear()
+        self.scores.clear()
         io_utils = IOUtils(rule_str)
         self.full_definition = io_utils.full_definition
         self.rule_store = io_utils.rule_cells
         self.constructRuleMap(self.rule_store)
+        pass
 
     def constructRuleMap(self, rule_store):
         # reset the variables in case reuse this function to re-initiate from rule_store
@@ -87,7 +97,7 @@ class FastCNER:
                 status = IN
                 branches = [[]]
                 continue
-            elif status == IN and (ch != ']' and pre_char != '\\'):
+            elif status == IN and (ch != ']' or (ch == ']' and pre_char == '\\')):
                 if ch == '|':
                     branches.append([])
                 elif ch == '\\' and (next_ch == '[' or next_ch == ']'):

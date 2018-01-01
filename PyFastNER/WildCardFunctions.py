@@ -36,6 +36,7 @@ class WildCardFunctions:
         wildcard_funs['a'] = self.processWildCard_a
         wildcard_funs['u'] = self.processWildCard_u
         wildcard_funs['w'] = self.processWildCard_w
+        wildcard_funs['e'] = self.processWildCard_e
         pass
 
     def processWildCard_s(self, text, rule_map, match_begin, match_end, current_position, matches,
@@ -109,7 +110,7 @@ class WildCardFunctions:
 
     def processWildCard_a(self, text, rule_map, match_begin, match_end, current_position, matches,
                           this_char):
-        if not this_char.isspaces():
+        if not this_char.isspace():
             self.processRules(text, rule_map['a'], match_begin, match_end, current_position + 1, matches,
                               this_char, True, 'a')
             pass
@@ -123,7 +124,7 @@ class WildCardFunctions:
 
     def processWildCard_w(self, text, rule_map, match_begin, match_end, current_position, matches,
                           this_char):
-        if this_char > '~' or this_char.isspaces():
+        if this_char > '~' or this_char.isspace():
             self.processRules(text, rule_map['w'], match_begin, match_end, current_position + 1, matches,
                               this_char, True, 'w')
             pass
@@ -133,4 +134,11 @@ class WildCardFunctions:
         if current_position == 0:
             self.processRules(text, rule_map['b'], match_begin, match_end, current_position, matches,
                               this_char, True, 'b')
+            pass
+
+    def processWildCard_e(self, text, rule_map, match_begin, match_end, current_position, matches,
+                          this_char):
+        if current_position == len(text):
+            self.processRules(text, rule_map['e'], match_begin, match_end, current_position, matches,
+                              this_char, True, 'e')
             pass

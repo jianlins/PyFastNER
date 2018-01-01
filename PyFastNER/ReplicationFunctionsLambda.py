@@ -92,7 +92,7 @@ class ReplicationFunctions:
 
 	def processReplication_a(self, text, rule_map, match_begin, match_end, current_position, matches,
 							 this_char, previous_char):
-		evalFunc = lambda char: not char.isspaces()
+		evalFunc = lambda char: not char.isspace()
 		processReplicationCommon(evalFunc, self.processRules, text, rule_map, match_begin, match_end, current_position, matches,
 								 this_char, previous_char)
 		pass
@@ -106,7 +106,7 @@ class ReplicationFunctions:
 
 	def processReplication_w(self, text, rule_map, match_begin, match_end, current_position, matches,
 							 this_char, previous_char):
-		evalFunc = lambda char: (char > '~' or char.isspaces())
+		evalFunc = lambda char: (char > '~' or char.isspace())
 		processReplicationCommon(evalFunc, self.processRules, text, rule_map, match_begin, match_end, current_position, matches,
 								 this_char, previous_char)
 		pass
