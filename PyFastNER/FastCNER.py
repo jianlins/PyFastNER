@@ -227,8 +227,11 @@ class FastCNER:
                            pre_char, wildcard_support, pre_key):
         this_char = text[current_position]
         if wildcard_support:
-            self.replication_funcs[pre_key](text, rule_map, match_begin, match_end, current_position, matches,
+            if pre_key in self.replication_funcs:
+                self.replication_funcs[pre_key](text, rule_map, match_begin, match_end, current_position, matches,
                                             this_char, pre_char)
+            else:
+                print('"\\' + pre_key + '+" is not a eligible syntax.')
         else:
             processReplicationCommon(lambda char: char == pre_key, self.processRules, text, rule_map, match_begin,
                                      match_end, current_position,
@@ -240,7 +243,10 @@ class FastCNER:
                          pre_char, wildcard_support, pre_key):
         this_char = text[current_position]
         for rule_char in rule_map.keys():
-            self.wildcard_funcs[rule_char](text, rule_map, match_begin, match_end, current_position, matches, this_char)
+            if rule_char in self.wildcard_funcs:
+                self.wildcard_funcs[rule_char](text, rule_map, match_begin, match_end, current_position, matches, this_char)
+            else:
+                print('"\\'+rule_char+'" is not a eligible syntax.')
         pass
 
     def addDeterminants(self, text, deter_rule, matches, match_begin, match_end, current_position):
