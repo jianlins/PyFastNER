@@ -15,7 +15,7 @@ pip install PyFastNER
 Here is a simiple example of using external dictionary to find matches in an input string. It will return 
 a dictionary of spans grouped by the named entity types.
 ```python
-from nlp.FastCNER import FastCNER
+from PyFastNER.FastCNER import FastCNER
 # initiate fastner using external rule file
 fastner = FastCNER('conf/crule_test.tsv')
 # process an input string
@@ -29,7 +29,7 @@ for type in res.keys():
 Here is another example if you need process a sentence within a document, where you just need to tell the offset of
 the sentence to the beginning of the document.
 ```python
-from nlp.FastCNER import FastCNER
+from PyFastNER.FastCNER import FastCNER
 fastner = FastCNER('conf/crule_test.tsv')
 res = fastner.processString('Pt came with fever, T 102.0F.',134)
 ```
