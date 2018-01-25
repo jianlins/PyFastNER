@@ -182,10 +182,10 @@ class FastCNER:
             if '\\' in rule_map:
                 self.processWildCards(text, rule_map['\\'], match_begin, match_end, current_position, matches, pre_char,
                                       True, '\\')
-            if '(' in rule_map:
+            if '(' in rule_map and pre_key != '\\':
                 self.processRules(text, rule_map['('], current_position, match_end, current_position, matches, pre_char,
                                   False, '(')
-            if ')' in rule_map:
+            if ')' in rule_map and pre_key != '\\':
                 self.processRules(text, rule_map[')'], match_begin, current_position, current_position, matches,
                                   pre_char, False, ')')
 
@@ -229,7 +229,7 @@ class FastCNER:
         if wildcard_support:
             if pre_key in self.replication_funcs:
                 self.replication_funcs[pre_key](text, rule_map, match_begin, match_end, current_position, matches,
-                                            this_char, pre_char)
+                                                this_char, pre_char)
             else:
                 print('"\\' + pre_key + '+" is not a eligible syntax.')
         else:
@@ -244,9 +244,10 @@ class FastCNER:
         this_char = text[current_position]
         for rule_char in rule_map.keys():
             if rule_char in self.wildcard_funcs:
-                self.wildcard_funcs[rule_char](text, rule_map, match_begin, match_end, current_position, matches, this_char)
+                self.wildcard_funcs[rule_char](text, rule_map, match_begin, match_end, current_position, matches,
+                                               this_char)
             else:
-                print('"\\'+rule_char+'" is not a eligible syntax.')
+                print('"\\' + rule_char + '" is not a eligible syntax.')
         pass
 
     def addDeterminants(self, text, deter_rule, matches, match_begin, match_end, current_position):

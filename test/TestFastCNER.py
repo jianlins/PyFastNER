@@ -198,7 +198,7 @@ b\t1\tR2'''
         res = self.fastcner.processString(''' \\37.3''')
         assert (len(res) == 1)
         assert (len(res['R1']) == 1)
-        assert (res['R1'][0].text == '\\37')
+        assert (res['R1'][0].text == " \\37")
         res = self.fastcner.processString(''' !T37.3''')
         assert (len(res) == 0)
         pass

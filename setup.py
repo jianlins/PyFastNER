@@ -7,12 +7,12 @@ with open(path.join(here, 'README'), encoding='utf-8') as f:
 setup(
     name='PyFastNER',
     packages=['PyFastNER'],  # this must be the same as the name above
-    version='1.0.7.dev1',
+    version='1.0.8.dev2',
     description='A fast implementation of dictionary based named entity recognition.',
     author='Jianlin',
     author_email='jianlinshi.cn@gmail.com',
     url='https://github.com/jianlins/PyFastNER',  # use the URL to the github repo
-    download_url='https://github.com/jianlins/PyFastNER/archive/1.0.6.dev1.zip',
+    download_url='https://github.com/jianlins/PyFastNER/archive/1.0.8.dev2.zip',
     keywords=['PyFastNER', 'ner', 'regex'],
     long_description=long_description,
     classifiers=[
