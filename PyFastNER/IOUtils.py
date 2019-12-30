@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import csv
+import logging
 from decimal import Decimal
 
 
@@ -52,7 +53,7 @@ class IOUtils:
             elif len(row) >= 3:
                 self.rule_cells[row_num] = self.buildRule(row_num, row)
             else:
-                print('Incorrect formated rule: ' + str(row))
+                logging.info('Incorrect formated rule: ' + str(row))
         pass
 
     def buildRule(self, row_num, row):

@@ -21,16 +21,16 @@ import os
 import logging
 import logging.config
 
-from quicksectx import IntervalTree,Interval
+from quicksectx import IntervalTree, Interval
 
 
 def initLogger():
     config_file = '../conf/logging.ini'
     if not os.path.isfile(config_file):
-        print(os.path.abspath(config_file) + ' not found.')
+        logging.info(os.path.abspath(config_file) + ' not found.')
         config_file = 'conf/logging.ini'
     if not os.path.isfile(config_file):
-        print(os.path.abspath(config_file) + ' not found.')
+        logging.info(os.path.abspath(config_file) + ' not found.')
         config_file = 'logging.ini'
         with open(config_file, 'w') as f:
             f.write('''[loggers]
@@ -75,8 +75,6 @@ class FastCNER:
         self.overlap_checkers = dict()
         self.wildcard_funcs = WildCardFunctions(self.processRules).wildcard_funcs
         self.replication_funcs = ReplicationFunctions(self.processRules, self.max_repeat).replication_funcs
-        from pathlib import Path
-        print(Path(rule_str).absolute())
         self.rule_str = rule_str
         self.rule_map = dict()
         self.scores = dict()
@@ -278,7 +276,7 @@ class FastCNER:
                 self.replication_funcs[pre_key](text, rule_map, match_begin, match_end, current_position, matches,
                                                 this_char, pre_char)
             else:
-                print('"\\' + pre_key + '+" is not a eligible syntax.')
+                logging.info('"\\' + pre_key + '+" is not a eligible syntax.')
         else:
             processReplicationCommon(lambda char: char == pre_key, self.processRules, text, rule_map, match_begin,
                                      match_end, current_position,
@@ -294,7 +292,7 @@ class FastCNER:
                 self.wildcard_funcs[rule_char](text, rule_map, match_begin, match_end, current_position, matches,
                                                this_char)
             else:
-                print('"\\' + rule_char + '" is not a eligible syntax.')
+                logging.info('"\\' + rule_char + '" is not a eligible syntax.')
         pass
 
     def addDeterminants(self, text, deter_rule, matches, match_begin, match_end, current_position):
@@ -306,8 +304,8 @@ class FastCNER:
         overlap_checkers = self.overlap_checkers
         for key in deter_rule.keys():
             rule_id = deter_rule[key]
-            if FastCNER.logger.isEnabledFor(logging.DEBUG):
-                print('try add matched rule ({}-{})\t{}'.format(match_begin,match_end, str(self.rule_store[rule_id])))
+            FastCNER.logger.debug(
+                'try add matched rule ({}-{})\t{}'.format(match_begin, match_end, str(self.rule_store[rule_id])))
             current_span.rule_id = rule_id
             if key in matches:
                 current_spans_list = matches[key]
