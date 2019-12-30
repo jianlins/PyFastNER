@@ -1,4 +1,4 @@
-from setuptools import setup,Extension
+from setuptools import setup, Extension
 from codecs import open
 from os import path
 from Cython.Build import cythonize, build_ext
@@ -17,7 +17,7 @@ if macros:
     directive_defaults['binding'] = True
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-include_dirs = [dir_path + "/PyFastNER"]
+include_dirs = [dir_path + "/PyFastNER", dir_path]
 print("include dir", include_dirs)
 extensions = [
     # Extension(
@@ -25,7 +25,6 @@ extensions = [
     #     define_macros=macros,
     #     include_dirs=include_dirs),
 ]
-
 
 
 def get_version():
@@ -40,6 +39,7 @@ def get_version():
             return f.read().split('\n')[0].split('=')[-1].replace('\'', '').strip()
     except IOError:
         return "0.0.0a1"
+
 
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README'), encoding='utf-8') as f:
@@ -58,7 +58,7 @@ setup(
     keywords=['PyFastNER', 'ner', 'regex'],
     license='Apache License',
     long_description=long_description,
-    ext_modules=cythonize(extensions, language_level=2),
+    ext_modules=cythonize(extensions, language_level=3),
     classifiers=[
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',

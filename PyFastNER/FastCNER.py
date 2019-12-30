@@ -13,10 +13,10 @@
 # limitations under the License.
 # from quicksect import IntervalTree
 
-from PyFastNER.WildCardFunctions import WildCardFunctions
-from PyFastNER.IOUtils import IOUtils, Rule, Span
-from PyFastNER.ReplicationFunctionsLambda import ReplicationFunctions
-from PyFastNER.ReplicationFunctionsLambda import processReplicationCommon
+from .WildCardFunctions import WildCardFunctions
+from .IOUtils import IOUtils, Rule, Span
+from .ReplicationFunctionsLambda import ReplicationFunctions
+from .ReplicationFunctionsLambda import processReplicationCommon
 import os
 import logging
 import logging.config
@@ -67,7 +67,7 @@ class FastCNER:
     initLogger()
     logger = logging.getLogger(__name__)
 
-    def __init__(self, rule_str, max_repeat=50):
+    def __init__(self, rule_str='', max_repeat=50):
         self.span_compare_method = 'width'
         self.support_replication = False
         self.offset = 0
