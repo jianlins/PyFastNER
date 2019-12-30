@@ -57,7 +57,7 @@ setup(
     url='https://github.com/jianlins/PyFastNER',  # use the URL to the github repo
     keywords=['PyFastNER', 'ner', 'regex'],
     license='Apache License',
-    long_description=long_description,
+    long_description='PyFastNER is the python implementation of FastNER, which is orginally developed using Java. It uses hash function to process multiple rules at the same time. Similar to FastNER, PyFastNER supports token-based rules (FastNER--under developing) and character-based rules (FastCNER). It is licensed under the Apache License, Version 2.0.',
     ext_modules=cythonize(extensions, language_level=3),
     classifiers=[
         'Programming Language :: Python :: 3',
