@@ -11,16 +11,61 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from intervaltree import IntervalTree
+# from quicksect import IntervalTree
 
 from PyFastNER.WildCardFunctions import WildCardFunctions
 from PyFastNER.IOUtils import IOUtils, Rule, Span
 from PyFastNER.ReplicationFunctionsLambda import ReplicationFunctions
 from PyFastNER.ReplicationFunctionsLambda import processReplicationCommon
+import os
+import logging
+import logging.config
+
+from quicksectx import IntervalTree,Interval
+
+
+def initLogger():
+    config_file = '../conf/logging.ini'
+    if not os.path.isfile(config_file):
+        print(os.path.abspath(config_file) + ' not found.')
+        config_file = 'conf/logging.ini'
+    if not os.path.isfile(config_file):
+        print(os.path.abspath(config_file) + ' not found.')
+        config_file = 'logging.ini'
+        with open(config_file, 'w') as f:
+            f.write('''[loggers]
+keys=root
+
+[handlers]
+keys=consoleHandler
+
+[formatters]
+keys=simpleFormatter
+
+[logger_root]
+level=WARNING
+handlers=consoleHandler
+
+[handler_consoleHandler]
+class=StreamHandler
+level=WARNING
+formatter=simpleFormatter
+args=(sys.stdout,)
+
+[formatter_simpleFormatter]
+format=%(asctime)s - %(name)s - %(levelname)s - %(message)s
+datefmt=
+''')
+    logging.config.fileConfig(config_file)
+
+
+# initLogger()
 
 
 class FastCNER:
     END = ('<END>')
+    initLogger()
+    logger = logging.getLogger(__name__)
 
     def __init__(self, rule_str, max_repeat=50):
         self.span_compare_method = 'width'
@@ -259,6 +304,8 @@ class FastCNER:
         overlap_checkers = self.overlap_checkers
         for key in deter_rule.keys():
             rule_id = deter_rule[key]
+            if FastCNER.logger.isEnabledFor(logging.DEBUG):
+                print('try add matched rule ({}-{})\t{}'.format(match_begin,match_end, str(self.rule_store[rule_id])))
             current_span.rule_id = rule_id
             if key in matches:
                 current_spans_list = matches[key]
@@ -270,15 +317,16 @@ class FastCNER:
                     if not self.compareSpan(current_span, overlapped_span):
                         continue
                     current_spans_list[pos] = current_span
-                    overlap_checker.remove_overlap(current_span.begin, current_span.end)
-                    overlap_checker.addi(current_span.begin, current_span.end, pos)
+                    overlap_checker.remove(Interval(current_span.begin, current_span.end))
+                    overlap_checker.add(current_span.begin, current_span.end, pos)
                 else:
-                    overlap_checker.addi(current_span.begin, current_span.end, len(current_spans_list))
+                    overlap_checker.add(current_span.begin, current_span.end, len(current_spans_list))
                     current_spans_list.append(current_span)
             else:
                 matches[key] = current_spans_list
                 overlap_checker = IntervalTree()
-                overlap_checker.addi(current_span.begin, current_span.end, len(current_spans_list))
+                # quickset's search will include both lower and upper bounds, so minus one from the end.
+                overlap_checker.add(current_span.begin, current_span.end - 1, len(current_spans_list))
                 current_spans_list.append(current_span)
                 overlap_checkers[key] = overlap_checker
 

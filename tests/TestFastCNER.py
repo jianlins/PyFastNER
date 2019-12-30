@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import json
+import logging
 import unittest
 
-from PyFastNER.FastCNER import FastCNER
-from PyFastNER.IOUtils import Rule
+from PyFastNER import FastCNER
+from PyFastNER import Rule
 
 
 class TestFastCNER(unittest.TestCase):
@@ -180,9 +181,11 @@ b\t1\tR2'''
         pass
 
     def test_a(self):
+        # FastCNER.logger.setLevel(logging.DEBUG)
         rule_str = r"\w+(\a+[|.\d+]	1.5	R1"
+        text=''' T37.3'''
         self.fastcner.initiate(rule_str)
-        res = self.fastcner.processString(''' T37.3''')
+        res = self.fastcner.processString(text)
         assert (len(res) == 1)
         assert (len(res['R1']) == 1)
         assert (res['R1'][0].text == 'T37.3')
