@@ -24,6 +24,7 @@ platform:
 
 install:
   - "%PYTHON%\\python.exe -m pip install -q wheel twine cython"
+  - "%PYTHON%\\python.exe -m pip install -r dev-requirements.txt"
 
 
 # Skip .NET project specific build phase.
