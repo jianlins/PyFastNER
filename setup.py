@@ -80,5 +80,5 @@ setup(
     ],
     data_files=[('demo_data', ['conf/crule_test.tsv'])],
     package_data={'': ['*.pyx', '*.pxd']},
-    include_dirs=["."]
+    include_dirs=include_dirs
 )

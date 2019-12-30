@@ -17,11 +17,14 @@ import unittest
 
 from PyFastNER import FastCNER
 from PyFastNER import Rule
+import os
 
 
 class TestFastCNER(unittest.TestCase):
+
     def setUp(self):
-        self.fastcner = FastCNER('../conf/crule_test.tsv')
+        pwd = os.path.dirname(os.path.abspath(__file__))
+        self.fastcner = FastCNER(str(os.path.join(pwd,'../conf/crule_test.tsv')))
 
     def test_expand(self):
         expanded = self.fastcner.expandSquareBracket(Rule(-1, 'ab[c|d]e[f|g]', 'R1', 1.5))
@@ -141,7 +144,7 @@ b\t1\tR2'''
     def test_u(self):
         rule_str = r"\u+(\C\d+[|.\d+]	1.5	R1"
         self.fastcner.initiate(rule_str)
-        res = self.fastcner.processString(chr(235)+chr(187)+chr(195)+'''T37.3''')
+        res = self.fastcner.processString(chr(235) + chr(187) + chr(195) + '''T37.3''')
         assert (len(res) == 1)
         assert (len(res['R1']) == 1)
         assert (res['R1'][0].text == 'T37.3')
@@ -183,7 +186,7 @@ b\t1\tR2'''
     def test_a(self):
         # FastCNER.logger.setLevel(logging.DEBUG)
         rule_str = r"\w+(\a+[|.\d+]	1.5	R1"
-        text=''' T37.3'''
+        text = ''' T37.3'''
         self.fastcner.initiate(rule_str)
         res = self.fastcner.processString(text)
         assert (len(res) == 1)
@@ -205,6 +208,7 @@ b\t1\tR2'''
         res = self.fastcner.processString(''' !T37.3''')
         assert (len(res) == 0)
         pass
+
 
 if __name__ == '__main__':
     unittest.main()

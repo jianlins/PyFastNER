@@ -75,6 +75,8 @@ class FastCNER:
         self.overlap_checkers = dict()
         self.wildcard_funcs = WildCardFunctions(self.processRules).wildcard_funcs
         self.replication_funcs = ReplicationFunctions(self.processRules, self.max_repeat).replication_funcs
+        from pathlib import Path
+        print(Path(rule_str).absolute())
         self.rule_str = rule_str
         self.rule_map = dict()
         self.scores = dict()
