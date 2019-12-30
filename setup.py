@@ -61,7 +61,7 @@ setup(
     ],
     tests_require=[
         'intervaltree',
-        'kerneltree',
+        # 'kerneltree', cannot compile on windows
     ],
     data_files=[('demo_data', ['conf/crule_test.tsv'])],
     package_data={'': ['*.pyx', '*.pxd']},
