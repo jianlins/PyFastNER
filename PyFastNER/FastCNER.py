@@ -25,15 +25,17 @@ from quicksectx import IntervalTree, Interval
 
 
 def initLogger():
-    config_file = '../conf/logging.ini'
-    if not os.path.isfile(config_file):
-        logging.info(os.path.abspath(config_file) + ' not found.')
-        config_file = 'conf/logging.ini'
-    if not os.path.isfile(config_file):
-        logging.info(os.path.abspath(config_file) + ' not found.')
-        config_file = 'logging.ini'
-        with open(config_file, 'w') as f:
-            f.write('''[loggers]
+    config_files = ['../../../conf/logging.ini', '../../conf/logging.ini', '../conf/logging.ini', 'conf/logging.ini',
+                    'logging.ini']
+    config_file = None
+    for f in config_files:
+        if os.path.isfile(f):
+            config_file = f
+            break
+    if config_file is None:
+        config_file = config_files[-1]
+    with open(config_file, 'w') as f:
+        f.write('''[loggers]
 keys=root
 
 [handlers]
@@ -64,10 +66,8 @@ datefmt=
 
 class FastCNER:
     END = ('<END>')
-    initLogger()
-    logger = logging.getLogger(__name__)
 
-    def __init__(self, rule_str='', max_repeat=50):
+    def __init__(self, rule_str='', max_repeat=50, enable_logger: bool = False):
         self.span_compare_method = 'width'
         self.support_replication = False
         self.offset = 0
@@ -81,6 +81,11 @@ class FastCNER:
         self.full_definition = False
         self.rule_store = {}
         self.initiate(rule_str)
+        if enable_logger:
+            initLogger()
+            self.logger == logging.getLogger(__name__)
+        else:
+            self.logger = None
 
     def initiate(self, rule_str):
         self.rule_str = rule_str
@@ -304,8 +309,9 @@ class FastCNER:
         overlap_checkers = self.overlap_checkers
         for key in deter_rule.keys():
             rule_id = deter_rule[key]
-            FastCNER.logger.debug(
-                'try add matched rule ({}-{})\t{}'.format(match_begin, match_end, str(self.rule_store[rule_id])))
+            if self.logger is not None:
+                self.logger.debug(
+                    'try add matched rule ({}-{})\t{}'.format(match_begin, match_end, str(self.rule_store[rule_id])))
             current_span.rule_id = rule_id
             if key in matches:
                 current_spans_list = matches[key]

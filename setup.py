@@ -20,10 +20,10 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 include_dirs = [dir_path + "/PyFastNER", dir_path]
 print("include dir", include_dirs)
 extensions = [
-    # Extension(
-    #     "quicksect", ["PyFastNER/quicksectx.pyx"],
-    #     define_macros=macros,
-    #     include_dirs=include_dirs),
+    Extension(
+        "PyFastNER", ["PyFastNER/CFastCNER.pyx"],
+        define_macros=macros,
+        include_dirs=include_dirs),
 ]
 
 
