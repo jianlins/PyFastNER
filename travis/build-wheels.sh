@@ -42,6 +42,6 @@ for whl in wheelhouse/*.whl; do
 done
 
 ls /io/wheelhouse -l
-"${PYBIN}/pip" install ${PROJECT_NAME} --no-index -f /io/wheelhouse
+"${PYBIN}/pip" install -q /io/wheelhouse/${PROJECT_NAME}*
 (cp -R /io/tests "$HOME"/tests; cd "$HOME"; ls tests; "${PYBIN}/nosetests" tests;)
 # Install packages and test
