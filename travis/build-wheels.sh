@@ -26,7 +26,10 @@ echo "PYBIN:$PYBIN"
 "${PYBIN}/pip" install -q -r /io/dev-requirements.txt
 "${PYBIN}/pip" wheel /io/ -w wheelhouse/
 
+ls /io
+
 pwd
+
 ls wheelhouse -l
 # Bundle external shared libraries into the wheels
 [ ! -d "/io/wheelhouse/" ] && mkdir /io/wheelhouse/
