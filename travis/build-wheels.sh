@@ -34,7 +34,7 @@ for whl in wheelhouse/*.whl; do
       if [[ $whl == wheelhouse/*linux* ]]; then
         auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/;
       else
-        cp $whl /io/wheelhouse/;
+        cp $whl /io/wheelhouse;
       fi
     else
       rm $whl
