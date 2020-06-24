@@ -81,7 +81,8 @@ script:
         echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
         docker run --name "dk_$PLAT_$TRAVIS_PYTHON_VERSION" -v `pwd`:/io quay.io/pypa/$DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh $DOCKER_IMAGE $PROJECT_NAME $TRAVIS_PYTHON_VERSION";
         pwd;
-        ls;
+        echo "Inside wheelhouse"
+        ls wheelhouse;
     fi
 
   - if [[ $TRAVIS_OS_NAME == osx ]]; then
