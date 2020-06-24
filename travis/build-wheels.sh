@@ -28,6 +28,7 @@ echo "PYBIN:$PYBIN"
 
 pwd
 ls wheelhouse -l
+[ ! -d "/io/wheelhouse/" ] && mkdir /io/wheelhouse/
 # Bundle external shared libraries into the wheels
 for whl in wheelhouse/*.whl; do
     if [[ $whl == wheelhouse/${PROJECT_NAME}* ]]; then
@@ -35,6 +36,8 @@ for whl in wheelhouse/*.whl; do
         auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/;
       else
         cp $whl /io/wheelhouse;
+        ls /io -l;
+        ls /io/wheelhouse -l;
       fi
     else
       rm $whl
