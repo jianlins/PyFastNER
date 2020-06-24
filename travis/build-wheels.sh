@@ -31,7 +31,11 @@ ls wheelhouse -l
 # Bundle external shared libraries into the wheels
 for whl in wheelhouse/*.whl; do
     if [[ $whl == wheelhouse/${PROJECT_NAME}* ]]; then
-      auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
+      if [[ $whl == wheelhouse/*linux* ]]; then
+        auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
+      else
+        cp $whl /io/wheelhouse/
+      fi
     else
       rm $whl
     fi
