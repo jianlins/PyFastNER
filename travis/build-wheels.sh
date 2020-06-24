@@ -29,6 +29,7 @@ echo "PYBIN:$PYBIN"
 pwd
 ls wheelhouse -l
 # Bundle external shared libraries into the wheels
+[ ! -d "/io/wheelhouse/" ] && mkdir /io/wheelhouse/
 for whl in wheelhouse/*.whl; do
     if [[ $whl == wheelhouse/${PROJECT_NAME}* ]]; then
       if [[ $whl == wheelhouse/*linux* ]]; then
