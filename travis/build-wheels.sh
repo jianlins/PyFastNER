@@ -23,16 +23,14 @@ fi
 which python
 PYBIN="/opt/python/${PYBIN}/bin"
 echo "PYBIN:$PYBIN"
-"${PYBIN}/pip" install -q -r /io/dev-requirements.txt
-"${PYBIN}/pip" wheel /io/ -w wheelhouse/
-
-ls /io
+cd /io
+"${PYBIN}/pip" install -q -r dev-requirements.txt
+"${PYBIN}/pip" wheel ./ -w wheelhouse/
 
 pwd
+# Bundle external shared libraries into the wheels
 
 ls wheelhouse -l
-# Bundle external shared libraries into the wheels
-[ ! -d "/io/wheelhouse/" ] && mkdir /io/wheelhouse/
 for whl in wheelhouse/*.whl; do
     if [[ $whl == wheelhouse/${PROJECT_NAME}* ]]; then
       if [[ $whl == wheelhouse/*linux* ]]; then
