@@ -24,7 +24,7 @@ class TestFastCNER(unittest.TestCase):
 
     def setUp(self):
         pwd = os.path.dirname(os.path.abspath(__file__))
-        self.fastcner = FastCNER(str(os.path.join(pwd,'../conf/crule_test.tsv')))
+        self.fastcner = FastCNER(str(os.path.join(pwd,'crule_test.tsv')))
 
     def test_expand(self):
         expanded = self.fastcner.expandSquareBracket(Rule(-1, 'ab[c|d]e[f|g]', 'R1', 1.5))
