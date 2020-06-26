@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # from quicksect import IntervalTree
+from typing import Union, List
 
 from .WildCardFunctions import WildCardFunctions
 from .IOUtils import IOUtils, Rule, Span
@@ -67,7 +68,7 @@ datefmt=
 class FastCNER:
     END = ('<END>')
 
-    def __init__(self, rule_str='', max_repeat=50, enable_logger: bool = False):
+    def __init__(self, rules: Union[str, List] = '', max_repeat: int = 50, enable_logger: bool = False):
         self.span_compare_method = 'width'
         self.support_replication = False
         self.offset = 0
@@ -75,12 +76,12 @@ class FastCNER:
         self.overlap_checkers = dict()
         self.wildcard_funcs = WildCardFunctions(self.processRules).wildcard_funcs
         self.replication_funcs = ReplicationFunctions(self.processRules, self.max_repeat).replication_funcs
-        self.rule_str = rule_str
+        self.rule_str = rules
         self.rule_map = dict()
         self.scores = dict()
         self.full_definition = False
         self.rule_store = {}
-        self.initiate(rule_str)
+        self.initiate(rules)
         if enable_logger:
             initLogger()
             self.logger == logging.getLogger(__name__)

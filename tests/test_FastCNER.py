@@ -56,6 +56,34 @@ class TestFastCNER(unittest.TestCase):
         assert (rule_map['a']['b']['d']['<END>']['PROBLEM'] == 1)
         pass
 
+    def test_rule_list(self):
+        """
+        Take in 1-dimension list
+
+        """
+        self.fastcner.initiate(['ab[c|d]\t0.5\tPROBLEM', 'he att	0.5	PROBLEM'])
+        rule_map = self.fastcner.rule_map
+        # print(json.dumps(rule_map, indent=2))
+        # print(json.dumps(fastcner.scores, indent=2))
+        res = self.fastcner.processString('abc is he att.')
+        assert (len(res) == 1)
+        assert (len(res['PROBLEM']) == 2)
+        pass
+
+    def test_rule_list2(self):
+        """
+        Take in 2-dimension list
+
+        """
+        self.fastcner.initiate([['ab[c|d]', '0.5', 'PROBLEM'], ['he att', '0.5', 'PROBLEM']])
+        rule_map = self.fastcner.rule_map
+        # print(json.dumps(rule_map, indent=2))
+        # print(json.dumps(fastcner.scores, indent=2))
+        res = self.fastcner.processString('abc is he att.')
+        assert (len(res) == 1)
+        assert (len(res['PROBLEM']) == 2)
+        pass
+
     def test_overlap_match(self):
         rule_str = '''abc\t1.5\tR1\tPSEUDO
 bc\t1\tR1

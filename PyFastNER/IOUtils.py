@@ -14,20 +14,32 @@
 import csv
 import logging
 from decimal import Decimal
+from typing import Union, List, Iterator, Generator
 
 
 class IOUtils:
 
-    def __init__(self, rules_str):
+    def __init__(self, rules: Union[str, List]):
         self.rule_cells = {}
         self.initiations = {}
         self.full_definition = False
-        if rules_str.lower().endswith('csv'):
-            self.read(rules_str, ',')
-        elif rules_str.lower().endswith('tsv'):
-            self.read(rules_str, '\t')
+        if isinstance(rules, str):
+            if rules.lower().endswith('csv'):
+                self.read(rules, ',')
+            elif rules.lower().endswith('tsv'):
+                self.read(rules, '\t')
+            else:
+                self.readString(rules, '\t')
+        elif isinstance(rules, List):
+            if len(rules) > 0:
+                if isinstance(rules[0], List):
+                    self.parse_iterator(rules)
+                elif isinstance(rules[0], str):
+                    self.parse_iterator([line.split('\t') for line in rules])
+            pass
         else:
-            self.readString(rules_str, '\t')
+            raise ValueError(
+                "Rules can either be a List or a string. The input type: '{}' is not eligible.".format(type(rules)))
         pass
 
     def read(self, file_name, delimiter):
@@ -40,8 +52,12 @@ class IOUtils:
 
     def parse(self, input, delimiter):
         spamreader = csv.reader(input, delimiter=delimiter)
+        self.parse_iterator(spamreader)
+        pass
+
+    def parse_iterator(self, iterator: Union[Iterator, List]):
         row_num = 0
-        for row in spamreader:
+        for row in iterator:
             row_num += 1
             if len(row) < 2:
                 continue
