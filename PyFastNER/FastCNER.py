@@ -34,8 +34,8 @@ def initLogger():
             break
     if config_file is None:
         config_file = config_files[-1]
-    with open(config_file, 'w') as f:
-        f.write('''[loggers]
+        with open(config_file, 'w') as f:
+            f.write('''[loggers]
 keys=root
 
 [handlers]
