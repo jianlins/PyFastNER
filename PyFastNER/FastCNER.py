@@ -324,7 +324,7 @@ class FastCNER:
                 self.logger.debug(
                     'try add matched rule ({}-{})\t{}'.format(match_begin, match_end, str(self.rule_store[rule_id])))
             current_span.rule_id = rule_id
-            if key in matches:
+            if key in overlap_checkers:
                 current_spans_list = matches[key]
                 overlap_checker = overlap_checkers[key]
                 overlapped_pos = overlap_checker.search(current_span.begin, current_span.end)
