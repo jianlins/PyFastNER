@@ -214,7 +214,11 @@ class FastCNER:
         rule_map1[rule_str[i]] = rule_map2.copy()
         return True
 
-    def processString(self, text: str, offset: int = 0, matches: Dict = dict()):
+    def processString(self, text: str, offset: int = 0):
+        matches: Dict = dict()
+        return self.process(text, offset, matches)
+
+    def process(self, text: str, offset: int = 0, matches: Dict = dict()):
         """
 
         @param text: input text
