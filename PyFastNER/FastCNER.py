@@ -12,17 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # from quicksect import IntervalTree
-from typing import Union, List
+import logging
+import logging.config
+import os
+from typing import Union, List, Dict
 
-from .WildCardFunctions import WildCardFunctions
+from quicksectx import IntervalTree, Interval
+
 from .IOUtils import IOUtils, Rule, Span
 from .ReplicationFunctionsLambda import ReplicationFunctions
 from .ReplicationFunctionsLambda import processReplicationCommon
-import os
-import logging
-import logging.config
-
-from quicksectx import IntervalTree, Interval
+from .WildCardFunctions import WildCardFunctions
 
 
 def initLogger():
@@ -214,10 +214,16 @@ class FastCNER:
         rule_map1[rule_str[i]] = rule_map2.copy()
         return True
 
-    def processString(self, text, offset=0):
+    def processString(self, text: str, offset: int = 0, matches: Dict = dict()):
+        """
+
+        @param text: input text
+        @param offset: start position to check matches
+        @param matches: matches rules. You can redefine keys to ensure the order of the keys
+        @return: A dictionary of matched Span grouped by types(keys)
+        """
         self.offset = offset
         self.overlap_checkers.clear()
-        matches = dict()
         for i in range(0, len(text)):
             pre_char = text[i - 1] if i > 0 else ' '
             self.processRules(text, self.rule_map, i, 0, i, matches, pre_char, False, ' ')
