@@ -1,2 +1,3 @@
 quicksectx>=0.2.7
+keyring==21.4.0
 nose
