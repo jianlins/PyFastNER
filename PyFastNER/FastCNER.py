@@ -314,8 +314,14 @@ class FastCNER:
     def addDeterminants(self, text, deter_rule, matches, match_begin, match_end, current_position):
         deter_rule = deter_rule[FastCNER.END]
         end = current_position if match_end == 0 else match_end
+        # in case the rules were not configured properly, this can ensure they won't break the execution.
+        if match_begin>end:
+            t=match_begin
+            match_begin = end
+            end=t
         current_span = Span(match_begin + self.offset, end + self.offset,
                             text[match_begin:end])
+
         current_spans_list = []
         overlap_checkers = self.overlap_checkers
         for key in deter_rule.keys():
