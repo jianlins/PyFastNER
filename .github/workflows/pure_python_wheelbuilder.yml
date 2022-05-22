@@ -116,7 +116,7 @@ jobs:
 
       - name: check downloaded
         run: |
-          mv -f ./dist/**/* ./dist/
+          mv -f ./dist/**/PyFastNER* ./dist/
           rm -rf dist/cp*
           rm -rf dist/sdist
           ls -R
