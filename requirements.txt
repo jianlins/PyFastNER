@@ -1,2 +1,2 @@
-quicksectx>=0.2.7
-cython>=0.29
+quicksectx>=0.3.1
+cython
