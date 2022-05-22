@@ -58,7 +58,7 @@ setup(
     keywords=['PyFastNER', 'ner', 'regex'],
     license='Apache License',
     long_description='PyFastNER is the python implementation of FastNER, which is orginally developed using Java. It uses hash function to process multiple rules at the same time. Similar to FastNER, PyFastNER supports token-based rules (FastNER--under developing) and character-based rules (FastCNER). It is licensed under the Apache License, Version 2.0.',
-    ext_modules=cythonize(extensions, language_level=3),
+    ext_modules=cythonize(extensions, compiler_directives={'language_level': "3"}),
     classifiers=[
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
