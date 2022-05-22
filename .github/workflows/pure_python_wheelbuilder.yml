@@ -35,9 +35,10 @@ jobs:
 
       - name: Install dependencies
         run: |
+          python --version
           python -m pip install --upgrade pip
           python -m pip install -U pip setuptools
-          pip install Cython
+          python -m pip install Cython
           python -m pip install -r requirements.txt
 
       - name: run unittest
