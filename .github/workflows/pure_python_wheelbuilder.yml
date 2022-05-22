@@ -44,7 +44,10 @@ jobs:
 
       - name: build wheel
         run: |
+          pip install wheel
           python -m pip wheel ./ --wheel-dir=wheelhouse
+#          python setup.py bdist_wheel --plat-name matrix.buildplat[1]  --dist-dir wheelhouse
+
 
 #      - name: Install pypa/build
 #        run: >-
