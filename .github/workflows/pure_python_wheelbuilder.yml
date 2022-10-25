@@ -28,10 +28,10 @@ jobs:
         - [windows-2019, win_amd64]
         - [windows-2019, win32]
 #        python: ["cp36"] # Note: Wheels not needed for PyPy
-        python: ["cp36", "cp37", "cp38", "cp39", "cp310"] # Note: Wheels not needed for PyPy
+        python: ["cp36", "cp37", "cp38", "cp39", "cp310","cp311"] # Note: Wheels not needed for PyPy
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
@@ -78,7 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout quicksectx
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       # Used to push the built wheels
       - uses: actions/setup-python@v3
         with:
