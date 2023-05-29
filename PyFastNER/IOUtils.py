@@ -43,7 +43,7 @@ class IOUtils:
         pass
 
     def read(self, file_name, delimiter):
-        with open(file_name, newline='') as csvfile:
+        with open(file_name, newline='', encoding='utf-8') as csvfile:
             self.parse(csvfile, delimiter)
         pass
 
