@@ -116,6 +116,10 @@ jobs:
         with:
           path: dist
 
+      - name: check download0
+        run: |
+          ls -R
+          
       - name: check downloaded
         run: |
           mv -vn ./dist/**/PyFastNER* ./dist/
