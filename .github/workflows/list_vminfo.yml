@@ -1,0 +1,48 @@
+name: check hardware
+on:
+  workflow_dispatch
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build_wheels:
+    name: Build ${{ matrix.python-version[1] }}-${{ matrix.buildplat[1] }}
+    if: 
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' &&
+      contains(github.event.pull_request.labels.*.name, 'Build System'))
+    runs-on: ${{ matrix.buildplat[0] }}
+    strategy:
+      # Ensure that a wheel builder finishes even if another fails
+      fail-fast: false
+      matrix:
+        # Github Actions doesn't support pairing matrix values together, let's improvise
+        # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
+        buildplat:
+          # 3.6 not avalilabe in ubuntu-latest
+          - [ubuntu-latest, manylinux_x86_64]
+#        python: ["cp36"] # Note: Wheels not needed for PyPy
+        python-version: 
+          - [cp36, 3.6]
+          - [cp37, 3.7]
+          - [cp38, 3.8]
+          - [cp39, 3.9]
+          - [cp310, 3.10.x]
+          - [cp311, 3.11.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version[1] }}
+      - name:  checking
+        run: |
+          cat /proc/meminfo
+          cat /proc/cpuinfo
+
+   
