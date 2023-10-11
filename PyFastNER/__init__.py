@@ -1,3 +1,3 @@
 from .FastCNER import FastCNER
 from .IOUtils import IOUtils, Rule, Span
-from .version import __version__
+__version__ = '1.0.9'

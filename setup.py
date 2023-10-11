@@ -28,18 +28,22 @@ extensions = [
 
 
 def get_version():
-    """Load the version from version.py, without importing it.
+    for line in open(os.path.join(os.path.dirname(__file__), 'PyFastNER', '__init__.py')).read().splitlines():
+        if line.startswith('__version__'):
+            delim = '"' if '"' in line else "'"
+            return line.split(delim)[1]
+    else:
+        raise RuntimeError("Unable to find version string.")
 
-    This function assumes that the last line in the file contains a variable defining the
-    version string with single quotes.
 
-    """
-    try:
-        with open('PyFastNER/version.py', 'r') as f:
-            return f.read().split('\n')[0].split('=')[-1].replace('\'', '').strip()
-    except IOError:
-        return "0.0.0a1"
+def parse_requirements(requirements_file):
+    requirements=open(os.path.join(os.path.dirname(__file__), requirements_file)).read().split('\n')
+    requirements=[r.strip() for r in requirements]
+    requirements=[r for r in requirements if len(r)>0 and not r.startswith('#')]
+    return requirements
 
+build_version=get_version()
+install_reqs = parse_requirements('requirements.txt')
 
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README'), encoding='utf-8') as f:
@@ -50,7 +54,7 @@ setup(
     packages=['PyFastNER'],  # this must be the same as the name above
     package_dir={'PyFastNER': 'PyFastNER'},
     cmdclass={'build_ext': build_ext},
-    version=get_version(),
+    version=build_version,
     description='A fast implementation of dictionary based named entity recognition.',
     author='Jianlin',
     author_email='jianlinshi.cn@gmail.com',
@@ -71,13 +75,8 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Text Processing :: Linguistic",
     ],
-    install_requires=[
-        'quicksectx'
-    ],
-    tests_require=[
-        'intervaltree',
-        # 'kerneltree', cannot compile on windows
-    ],
+    install_requires=parse_requirements('requirements.txt'),
+    tests_require=parse_requirements('dev-requirements.txt'),
     data_files=[('demo_data', ['conf/crule_test.tsv'])],
     package_data={'': ['*.pyx', '*.pxd']},
     include_dirs=include_dirs
