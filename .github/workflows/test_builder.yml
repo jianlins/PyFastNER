@@ -1,0 +1,99 @@
+name: test Builder
+on:
+  workflow_dispatch
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build_wheels:
+    name: Build ${{ matrix.python-version[1] }}-${{ matrix.buildplat[1] }}
+    if: 
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' &&
+      contains(github.event.pull_request.labels.*.name, 'Build System'))
+    runs-on: ${{ matrix.buildplat[0] }}
+    strategy:
+      # Ensure that a wheel builder finishes even if another fails
+      fail-fast: false
+      matrix:
+        # Github Actions doesn't support pairing matrix values together, let's improvise
+        # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
+        buildplat:
+          # 3.6 not avalilabe in ubuntu-latest
+          - [ubuntu-latest, manylinux_x86_64]
+          - [macos-latest, macosx_*]
+          - [windows-latest, win_amd64]
+#        python: ["cp36"] # Note: Wheels not needed for PyPy
+        python-version: 
+          - [cp36, 3.6]
+          - [cp37, 3.7]
+          - [cp38, 3.8]
+          - [cp39, 3.9]
+          - [cp310, 3.10.x]
+          - [cp311, 3.11.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version[1] }}
+          cache: 'pip'
+          cache-dependency-path: 'requirements.txt' 
+
+      - name: Install dependencies
+        run: |
+          python3 --version
+          python3 -m pip install --upgrade pip
+          python3 -m pip install Cython wheel setuptools
+          python3 -m pip install -r requirements.txt
+
+      - name: run unittest
+        run: |
+          python3 -m unittest discover -s tests
+
+      - name: build wheel
+        run: |
+          python3 -m pip wheel ./ --wheel-dir=wheelhouse
+#          python setup.py bdist_wheel --plat-name matrix.buildplat[1]  --dist-dir wheelhouse
+
+      - name: check build
+        run: |
+          ls wheelhouse
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.python-version[0] }}-${{ startsWith(matrix.buildplat[1], 'macosx') && 'macosx' || matrix.buildplat[1] }}
+          path: ./wheelhouse/*.whl
+
+  build_sdist:
+    name: Build sdist
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout quicksectx
+        uses: actions/checkout@v3
+      # Used to push the built wheels
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.8.x'
+          cache: 'pip'
+          cache-dependency-path: 'requirements.txt'  
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build sdist
+        run: |
+          python setup.py sdist
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: sdist
+          path: ./dist/*.tar.gz
+
