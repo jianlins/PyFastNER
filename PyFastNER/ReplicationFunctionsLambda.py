@@ -29,6 +29,8 @@ def processReplicationCommon(evalFunc, processRulesFunc, text, rule_map, match_b
 
 
 class ReplicationFunctions:
+	# claim the field here in order to pass pyspark use
+	max_repeat=50
 
 	def __init__(self, processRulesFunc, max_repeat=50):
 		self.replication_funcs = dict()
