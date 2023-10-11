@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0.0", 'Cython>=0.25,<=3.0.3',"wheel"]
+requires = ["setuptools>=61.0.0", 'Cython>=0.25,<=3.0.3',"wheel","quicksectx>=0.3.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,7 +8,7 @@ dynamic = ["dependencies","readme","version"]
 authors = [{name = "Jianlin", email="jianlinshi.cn@gmail.com"}]
 description = "PyFastNER is the python implementation of FastNER, which is orginally developed using Java. It uses hash function to process multiple rules at the same time. Similar to FastNER, PyFastNER supports token-based rules (FastNER--under developing) and character-based rules (FastCNER). It is licensed under the MIT License."
 keywords=['PyFastNER', 'ner', 'regex']
-requires-python = ">=3.8"
+requires-python = ">=3.7"
 license = { file = "LICENSE" }
 classifiers = [
     "License :: OSI Approved :: MIT License",
