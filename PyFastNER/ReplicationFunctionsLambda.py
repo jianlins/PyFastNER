@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import string
-global gmax_repeat=50
+global gmax_repeat
+gmax_repeat=50
 
 def processReplicationCommon(evalFunc, processRulesFunc, text, rule_map, match_begin, match_end, current_position, matches,
 							 this_char, previous_char):
