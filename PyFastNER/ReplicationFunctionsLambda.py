@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import string
-
+global gmax_repeat=50
 
 def processReplicationCommon(evalFunc, processRulesFunc, text, rule_map, match_begin, match_end, current_position, matches,
 							 this_char, previous_char):
+    global gmax_repeat
 	current_repeats = 0
 	text_length = len(text)
-	while evalFunc(this_char) and current_repeats < ReplicationFunctions.max_repeat and current_position < text_length:
+	while evalFunc(this_char) and current_repeats < gmax_repeat and current_position < text_length:
 		current_repeats += 1
 		current_position += 1
 		if current_position == text_length:
@@ -33,8 +34,10 @@ class ReplicationFunctions:
 	max_repeat=50
 
 	def __init__(self, processRulesFunc, max_repeat=50):
+        global gmax_repeat
 		self.replication_funcs = dict()
 		self.processRules = processRulesFunc
+		gmax_repeat = max_repeat
 		ReplicationFunctions.max_repeat = max_repeat
 		self.initReplicationFunctions(self.replication_funcs)
 		pass
