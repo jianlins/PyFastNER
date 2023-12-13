@@ -14,10 +14,11 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
 ]
+readme='README.md'
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
-readme='README.md'
+
 version = {attr = "PyFastNER.__version__" }
 
 [project.urls]
