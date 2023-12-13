@@ -17,7 +17,7 @@ classifiers = [
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
-readme={file = ['README.md']}
+readme='README.md'
 version = {attr = "PyFastNER.__version__" }
 
 [project.urls]
