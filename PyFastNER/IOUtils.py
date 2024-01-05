@@ -51,7 +51,7 @@ class IOUtils:
         self.parse(input.splitlines(), delimiter)
 
     def parse(self, input, delimiter):
-        spamreader = csv.reader(input, delimiter=delimiter)
+        spamreader = csv.reader(input, delimiter=delimiter, encoding='utf-8')
         self.parse_iterator(spamreader)
         pass
 
